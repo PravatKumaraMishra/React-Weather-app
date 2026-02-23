@@ -1,6 +1,7 @@
 import DailyForecast from "./components/card/DailyForecast";
 import HourlyForecast from "./components/card/HourlyForecast";
 import CurrentWeather from "./components/card/CurrentWeather";
+import AdditionalInfo from "./components/card/AdditionalInfo";
 
 function App() {
   // const { data } = useQuery({
@@ -13,6 +14,7 @@ function App() {
       <CurrentWeather coords={{ lat: 22.42, lon: 87.33 }} />
       <HourlyForecast coords={{ lat: 22.42, lon: 87.33 }} />
       <DailyForecast coords={{ lat: 22.42, lon: 87.33 }} />
+      <AdditionalInfo coords={{ lat: 22.42, lon: 87.33 }} />
     </div>
   );
 }
