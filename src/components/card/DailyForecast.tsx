@@ -1,19 +1,20 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWeather } from "../../hooks/api";
 import type { Coords } from "../../types";
+import { kelvinToCelsius } from "../../utils/temperature";
 import Card from "./Card";
+import WeatherIcon from "../WeatherIcon";
 
 type Props = {
   coords: Coords;
 };
+
 export default function DailyForecast({ coords }: Props) {
   const { data } = useSuspenseQuery({
     queryKey: ["weather", coords],
     queryFn: () => getWeather({ lat: coords.lat, lon: coords.lon }),
   });
-  const KelvinToCelcious = (temperature: number) => {
-    return temperature - 273.15;
-  };
+
   return (
     <Card
       title="Daily Forecast"
@@ -26,17 +27,14 @@ export default function DailyForecast({ coords }: Props) {
               weekday: "short",
             })}
           </p>
-          <img
-            className="size-8"
-            alt="weather Icon"
-            src={`https://openweathermap.org/payload/api/media/file/${day.weather[0].icon}.png`}
-          />
-          <p>{Math.round(KelvinToCelcious(day.temp.day))}°C</p>
+          <WeatherIcon className="2xl:size-10" src={day.weather[0].icon} />
+
+          <p>{Math.round(kelvinToCelsius(day.temp.day))}°C</p>
           <p className="text-gray-500/75">
-            {Math.round(KelvinToCelcious(day.temp.min))}°C
+            {Math.round(kelvinToCelsius(day.temp.min))}°C
           </p>
           <p className="text-gray-500/75">
-            {Math.round(KelvinToCelcious(day.temp.max))}°C
+            {Math.round(kelvinToCelsius(day.temp.max))}°C
           </p>
         </div>
       ))}
