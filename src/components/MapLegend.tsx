@@ -4,7 +4,6 @@ type Props = {
 
 export default function MapLegend({ mapType }: Props) {
   const data = mapTypeData[mapType];
-
   const maxValue = data.stops[data.stops.length - 1].value;
 
   const gradientStops = data.stops
