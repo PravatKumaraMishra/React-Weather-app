@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGeocode } from "./hooks/api";
 import SearchBar from "./components/dropDown/SearchBar";
 import MaptypeDropdown from "./components/dropDown/MaptypeDropdown";
+import MapLegend from "./components/MapLegend";
 
 function App() {
   const [coordinates, setCoords] = useState<Coords>({ lat: 22.21, lon: 87.68 });
@@ -39,9 +40,12 @@ function App() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <CurrentWeather coords={coords} />
         <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <p className="text-xl text-blue-400 font-semibold">Map Type: </p>
-            <MaptypeDropdown mapType={mapType} setMapType={setMapType} />
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="text-xl text-blue-400 font-semibold">Map Type: </p>
+              <MaptypeDropdown mapType={mapType} setMapType={setMapType} />
+            </div>
+            <MapLegend mapType={mapType} />
           </div>
           <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
         </div>
