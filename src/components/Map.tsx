@@ -5,6 +5,7 @@ import markerIcon2xUrl from "leaflet/dist/images/marker-icon-2x.png";
 import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 import type { Coords } from "../types";
+import { API_KEY } from "@/hooks/api";
 
 delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -16,8 +17,9 @@ L.Icon.Default.mergeOptions({
 type Props = {
   coords: Coords;
   onMapClick: (lat: number, lon: number) => void;
+  mapType: string;
 };
-export default function Map({ coords, onMapClick }: Props) {
+export default function Map({ coords, onMapClick, mapType }: Props) {
   const { lat, lon } = coords;
   return (
     <MapContainer
@@ -29,6 +31,10 @@ export default function Map({ coords, onMapClick }: Props) {
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <TileLayer
+        opacity={0.7}
+        url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${API_KEY}`}
       />
       <Marker position={[lat, lon]}></Marker>
     </MapContainer>
