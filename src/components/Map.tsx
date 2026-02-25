@@ -6,6 +6,8 @@ import markerIconUrl from "leaflet/dist/images/marker-icon.png";
 import markerShadowUrl from "leaflet/dist/images/marker-shadow.png";
 import type { Coords } from "../types";
 import { API_KEY } from "@/hooks/api";
+import { useEffect } from "react";
+import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
 delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -28,10 +30,7 @@ export default function Map({ coords, onMapClick, mapType }: Props) {
       style={{ width: "100%", height: "300px" }}
     >
       <MapClick onMapClick={onMapClick} coords={coords} />
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <MapTileLayer />
       <TileLayer
         opacity={0.7}
         url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${API_KEY}`}
@@ -54,5 +53,23 @@ function MapClick({
     const { lat, lng } = e.latlng;
     onMapClick(lat, lng);
   });
+  return null;
+}
+
+function MapTileLayer() {
+  const map = useMap();
+
+  useEffect(() => {
+    const tileLayer = new MaptilerLayer({
+      style: "basic-dark",
+      apiKey: "aiNaooJnN9QswGd7QdZ7",
+    });
+    tileLayer.addTo(map);
+
+    return () => {
+      map.removeLayer(tileLayer);
+    };
+  }, [map]);
+
   return null;
 }
